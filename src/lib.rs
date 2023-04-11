@@ -16,21 +16,22 @@ pub struct Ws2812Rpi {
     c_struct: bindings::ws2811_t,
 }
 
-impl Ws2812Rpi
-{
+impl Ws2812Rpi {
     /// Use ws2812 devices via rpi-ws281x library
     pub fn new(led_count: i32, pin: i32) -> Result<Self, WS2811Error> {
         unsafe {
-            let mut ret = Self { c_struct: mem::zeroed() };
+            let mut ret = Self {
+                c_struct: mem::zeroed(),
+            };
 
             ret.c_struct.freq = 800_000;
             ret.c_struct.dmanum = 10;
             ret.c_struct.channel[0] = ChannelBuilder::new()
-                                     .pin(pin)
-                                     .count(led_count)
-                                     .strip_type(StripType::Ws2811Rgb)
-                                     .brightness(255)
-                                     .build();
+                .pin(pin)
+                .count(led_count)
+                .strip_type(StripType::Ws2811Rgb)
+                .brightness(2)
+                .build();
             let res: Result<(), WS2811Error> = bindings::ws2811_init(&mut ret.c_struct).into();
 
             match res {
@@ -39,9 +40,7 @@ impl Ws2812Rpi
             }
             return Ok(ret);
         }
-
     }
-
 }
 
 impl Drop for Ws2812Rpi {
@@ -57,8 +56,7 @@ impl Drop for Ws2812Rpi {
     }
 }
 
-impl SmartLedsWrite for Ws2812Rpi
-{
+impl SmartLedsWrite for Ws2812Rpi {
     type Error = error::WS2811Error;
     type Color = RGB8;
     // Write all the items of an iterator to a ws2812 strip
