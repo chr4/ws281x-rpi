@@ -1,6 +1,6 @@
 [package]
 name = "ws281x-rpi"
-version = "0.0.1"
+version = "0.1.0"
 authors = ["Nathan Samson <nathan@nathansamson.be>"]
 edition = "2018"
 license = "MIT"
