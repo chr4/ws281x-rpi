@@ -18,7 +18,7 @@ pub struct Ws2812Rpi {
 
 impl Ws2812Rpi {
     /// Use ws2812 devices via rpi-ws281x library
-    pub fn new(led_count: i32, pin: i32) -> Result<Self, WS2811Error> {
+    pub fn new(led_count: i32, pin: i32, brightness: u8) -> Result<Self, WS2811Error> {
         unsafe {
             let mut ret = Self {
                 c_struct: mem::zeroed(),
@@ -30,7 +30,7 @@ impl Ws2812Rpi {
                 .pin(pin)
                 .count(led_count)
                 .strip_type(StripType::Ws2811Rgb)
-                .brightness(2)
+                .brightness(brightness)
                 .build();
             let res: Result<(), WS2811Error> = bindings::ws2811_init(&mut ret.c_struct).into();
 
